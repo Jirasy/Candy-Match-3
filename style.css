@@ -254,12 +254,12 @@ h2 { font-size: clamp(1.7rem, 4vw, 2.6rem); line-height: 1.1; letter-spacing: -0
 /* Styling untuk Footer */
 .game-footer {
   text-align: center;
-  font-size: 0.75rem;
-  color: rgba(37, 53, 77, 0.35);
-  margin-top: 20px;
+  font-size: 0.8rem;
+  color: rgba(37, 53, 77, 0.6); /* Transparansi dinaikkan dari 0.35 menjadi 0.6 agar lebih jelas */
+  margin-top: 25px;
   letter-spacing: 0.08em;
+  font-weight: 600;
   user-select: none;
-  pointer-events: none;
 }
 
 .overlay {
