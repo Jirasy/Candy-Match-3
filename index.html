@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candy Match-3 Infinite</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <main class="app-panel">
+      <!-- Menu Utama -->
+      <section id="menu" class="view menu-layout">
+        <div>
+          <p class="eyebrow">PETUALANGAN PERMEN</p>
+          <h1>Candy Match-3</h1>
+          <p class="intro">Tukar permen, ciptakan rangkaian manis, dan buka level demi level tanpa batas!</p>
+          <div class="menu-buttons">
+            <button type="button" data-action="main" class="btn btn-primary">Main</button>
+            <button type="button" data-action="levels" class="btn">Pilih Level</button>
+            <button type="button" data-action="settings" class="btn">Pengaturan</button>
+            <button type="button" data-action="help" class="btn">Cara Bermain</button>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="sweet type-0" style="width:110px;height:110px;font-size:55px">♥</div>
+          <div class="sweet type-1" style="width:105px;height:105px;font-size:52px">✦</div>
+          <div class="sweet type-3" style="width:115px;height:115px;font-size:54px">◆</div>
+        </div>
+      </section>
+
+      <!-- Pilih Level -->
+      <section id="level-select" class="view" hidden>
+        <div class="topline">
+          <div>
+            <p class="eyebrow">PETUALANGAN</p>
+            <h2>Pilih Level</h2>
+          </div>
+          <button type="button" data-action="menu" class="btn btn-small">Kembali</button>
+        </div>
+        <p class="muted">Selesaikan level untuk membuka tantangan berikutnya.</p>
+        <div id="level-grid" class="level-grid" aria-label="Daftar level"></div>
+        <div class="stack">
+          <button type="button" data-action="more-levels" class="btn btn-small">Lihat Level Lainnya</button>
+        </div>
+      </section>
+
+      <!-- Pengaturan -->
+      <section id="settings" class="view" hidden>
+        <div class="topline">
+          <h2>Pengaturan</h2>
+          <button type="button" data-action="menu" class="btn btn-small">Kembali</button>
+        </div>
+        <div class="settings-card settings-row">
+          <strong>Suara</strong>
+          <button type="button" id="settings-sound" data-action="sound" class="btn btn-dark btn-small" aria-pressed="true">
+            <span id="settings-sound-text">Aktif</span>
+          </button>
+        </div>
+        <div class="settings-card">
+          <h3>Reset Progress</h3>
+          <p class="muted">Hapus level terbuka, skor tertinggi, dan bintang yang terkumpul dari browser.</p>
+          <button type="button" data-action="ask-reset" class="btn btn-primary">Reset Progress</button>
+          <div id="reset-confirm" class="confirm-box" hidden>
+            <p>Yakin ingin menghapus semua progres? Tindakan ini tidak dapat dibatalkan.</p>
+            <div class="stack">
+              <button type="button" data-action="confirm-reset" class="btn btn-primary">Ya, Reset</button>
+              <button type="button" data-action="cancel-reset" class="btn">Batal</button>
+            </div>
+          </div>
+        </div>
+        <p id="settings-status" class="status" role="status" aria-live="polite"></p>
+      </section>
+
+      <!-- Cara Bermain -->
+      <section id="how-to-play" class="view" hidden>
+        <div class="topline">
+          <h2>Cara Bermain</h2>
+          <button type="button" data-action="menu" class="btn btn-small">Kembali</button>
+        </div>
+        <div class="info-card">
+          <ol class="instructions">
+            <li>Pilih dua permen yang bersebelahan atau geser (swipe) permen ke arah tetangganya.</li>
+            <li>Buat 3 atau lebih permen sejenis dalam satu baris horizontal atau kolom vertikal.</li>
+            <li>Permen hancur, permen di atasnya jatuh, dan permen baru akan muncul mengisi kekosongan.</li>
+            <li>Capai target skor sebelum sisa langkah habis. Pecahkan blocker untuk membuka area terhalang!</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Layar Permainan (Gameplay) -->
+      <section id="playing" class="view game-layout" hidden>
+        <div class="game-info">
+          <div class="topline">
+            <div>
+              <p class="eyebrow">CANDY MATCH-3</p>
+              <h2 id="game-level">Level 1</h2>
+            </div>
+            <div class="stack" style="margin:0">
+              <button type="button" data-action="game-sound" id="game-sound" class="btn btn-small" aria-label="Pengaturan Suara">♪</button>
+              <button type="button" data-action="pause" class="btn btn-dark btn-small">Jeda</button>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">Langkah</div>
+              <div id="moves" class="stat-value">0</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Skor</div>
+              <div id="score" class="stat-value">0</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Target</div>
+              <div id="target" class="stat-value">0</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Status</div>
+              <div id="game-status" class="stat-value" style="font-size:1rem" aria-live="polite">Siap!</div>
+            </div>
+          </div>
+          <div class="progress-area">
+            <div class="progress-track" role="progressbar" id="progress-track">
+              <div id="progress-fill" class="progress-fill"></div>
+            </div>
+          </div>
+          <p class="hint">Ketuk dua permen bertetangga atau geser untuk menukarnya.</p>
+        </div>
+        <div class="board-wrap">
+          <div id="board" class="board" role="grid" aria-label="Papan permainan"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Overlay Modal: Pause, Menang, & Kalah -->
+  <div id="pause-overlay" class="overlay" role="dialog" hidden>
+    <div class="overlay-card">
+      <h2>Jeda</h2>
+      <p class="muted">Permainan ditunda sementara.</p>
+      <div class="stack">
+        <button type="button" data-action="resume" class="btn btn-primary">Lanjutkan</button>
+        <button type="button" data-action="restart" class="btn">Ulangi</button>
+        <button type="button" data-action="quit" class="btn">Keluar ke Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="won-overlay" class="overlay" role="dialog" hidden>
+    <div class="overlay-card">
+      <p class="eyebrow">LUAR BIASA!</p>
+      <h2>Level Selesai!</h2>
+      <p id="won-summary"></p>
+      <div id="won-stars" style="font-size:2rem;color:#dc9136"></div>
+      <div class="stack">
+        <button type="button" data-action="next" class="btn btn-primary">Level Berikutnya</button>
+        <button type="button" data-action="restart" class="btn">Ulangi</button>
+        <button type="button" data-action="levels" class="btn">Pilih Level</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="lost-overlay" class="overlay" role="dialog" hidden>
+    <div class="overlay-card">
+      <h2>Gagal!</h2>
+      <p id="lost-summary"></p>
+      <div class="stack">
+        <button type="button" data-action="restart" class="btn btn-primary">Coba Lagi</button>
+        <button type="button" data-action="quit" class="btn">Keluar ke Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Memuat Script JS Modular -->
+  <script src="config.js"></script>
+  <script src="storage.js"></script>
+  <script src="audio.js"></script>
+  <script src="engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
