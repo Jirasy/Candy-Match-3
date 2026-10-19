@@ -251,6 +251,17 @@ h2 { font-size: clamp(1.7rem, 4vw, 2.6rem); line-height: 1.1; letter-spacing: -0
 .confirm-box { margin-top: 14px; padding: 16px; background: #fff2e6; border-radius: 16px; border: 1px solid #edc4ad; }
 .instructions { line-height: 1.7; padding-left: 23px; }
 
+/* Styling untuk Footer */
+.game-footer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: rgba(37, 53, 77, 0.35);
+  margin-top: 20px;
+  letter-spacing: 0.08em;
+  user-select: none;
+  pointer-events: none;
+}
+
 .overlay {
   position: fixed;
   inset: 0;
